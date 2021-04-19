@@ -15,6 +15,9 @@ def custom_loss(y_true,y_pred):
   obj=y_true[...,0]==1            #true for cells which have objects
   noobj=y_true[...,0]==0          #true for cells which does not have objects
 
+  y_pred_xy=y_pred[...,1:3]
+  y_pred_wh=y_pred[...,3:5]
+  
   #no obj loss
   noobj_loss=tf.reduce_mean(K.binary_crossentropy((y_true_conf[noobj]),(y_pred_conf[noobj]),from_logits=True))
 
