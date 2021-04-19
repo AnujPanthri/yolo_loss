@@ -21,7 +21,7 @@ def custom_loss(y_true,y_pred):
   #obj loss
   box_pred=K.concatenate([K.sigmoid(y_pred_xy),(y_pred_wh)],axis=-1)
   ious=intersection_over_union(box_pred[obj],y_true[...,1:5][obj])
-  obj_loss=tf.reduce_mean(K.binary_crossentropy((y_true_conf[obj]),(y_pred_conf[obj]),from_logits=True))
+  obj_loss=tf.reduce_mean(K.binary_crossentropy((ious*y_true_conf[obj]),(y_pred_conf[obj]),from_logits=True))
 
   #box cordinate loss
   box_loss=tf.reduce_mean(K.mean(K.square(K.concatenate([y_true[...,1:3],(y_true[...,3:5])])[obj]-K.concatenate([K.sigmoid(y_pred[...,1:3]),(y_pred[...,3:5])])[obj]), axis=-1))
